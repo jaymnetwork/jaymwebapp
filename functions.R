@@ -72,7 +72,7 @@ body(filled.contour)=expression({
 
 rdd_object<-function(data){
   rdd_data(y = data$percentage, 
-                     x = data$pointCluster, 
+           x = data$pointCluster, 
            cutpoint = 0)
 }
 
@@ -94,7 +94,7 @@ grouping <- function(data,quarter,number){
 
 grouping2 <- function(data,quarter,number){
   data2 <- data[data[quarter]==number,]
-
+  
   return(nrow(data2))
 }
 
@@ -102,7 +102,7 @@ kbl_match<-function(data, quarter, n){
   pointCluster<-c()
   percentage<-c()
   games<-c()
-
+  
   
   for(i in n:1) { 
     pointCluster<-append(pointCluster,-i)
@@ -184,7 +184,7 @@ The study identifies different types of players through results from the DEA mod
 
 DEA_plot1<-function(data){
   ggplot(data, aes(x= possplayer, y= DEA_vrs,family = "NanumGothic",
-                       label=ifelse(possplayer>21.1 &DEA_vrs==1,paste(as.character(PLAYER),SEASON),                                  ifelse(possplayer>5.861 & possplayer<9.1 & DEA_vrs==1,paste(as.character(PLAYER),SEASON),""))))+
+                   label=ifelse(possplayer>21.1 &DEA_vrs==1,paste(as.character(PLAYER),SEASON),                                  ifelse(possplayer>5.861 & possplayer<9.1 & DEA_vrs==1,paste(as.character(PLAYER),SEASON),""))))+
     labs(x="Possesion",
          y="Efficiency (VRS)",
          title="The Efficiency of Player's Productivity in KBL History ") +
@@ -276,8 +276,8 @@ DEA_plot3<-function(data){
 }
 
 
-shotloc<-function(data,data2){
-  court_points <- data2 %>% mutate_if(is.numeric,~.*10)
+shotloc<-function(data){
+  court_points <- court_points %>% mutate_if(is.numeric,~.*10)
   
   ggplot(data, aes(x=locationX, y=locationY+45)) + 
     scale_fill_manual(values = c("darkred","darkred"))+
@@ -297,9 +297,9 @@ shotloc<-function(data,data2){
           legend.position = "none")
 }
 
-shotloc_d<-function(data,data2){
-
-  court_points <- data2 %>% mutate_if(is.numeric,~.*10)
+shotloc_d<-function(data){
+  
+  court_points <- court_points %>% mutate_if(is.numeric,~.*10)
   
   ggplot(data, aes(x=locationX, y=locationY+45)) + 
     stat_density_2d(
@@ -383,21 +383,21 @@ dtf<-function(data,month1,month2,input1,input2,input3,input4){
 deaplotly<-function(data, z){
   
   plot_ly(x = data$x, y = data$y,colors = viridis_pal(option = "A")(5),
-                lighting=list(ambient=1,
-                              diffuse=1,
-                              fresnel=4,        
-                              specular=0.5,
-                              roughness=0.5),
-                lightposition=list(x=100,
-                                   y=100,
-                                   z=2000)) %>% 
+          lighting=list(ambient=1,
+                        diffuse=1,
+                        fresnel=4,        
+                        specular=0.5,
+                        roughness=0.5),
+          lightposition=list(x=100,
+                             y=100,
+                             z=2000)) %>% 
     add_surface(z=z)  %>%
     layout(
       scene = list(xaxis=list(title="CRS efficiencies"), yaxis=list(title="Revenue"),
                    zaxis=list(title="Team value increase"),camera = list(eye = list(x = -2.5, y = -1.2, z = 0.6))),
       scale_colour_viridis(option = "plasma")
     ) 
-
+  
 }
 
 deaplotgg<-function(data){
