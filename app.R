@@ -28,6 +28,7 @@ drafts<-read.csv("data/draft.csv")
 shotloc1<-read.csv("data/shotdata1.csv")
 shotloc2<-read.csv("data/shotdata2.csv")
 
+courtpoints2<-read.csv("data/courtPoints.csv")
 kbl_match_data <- read.csv("data/KBL_Regular_Quarter_Margin3.csv")
 kbl_match_data2 <- read.csv("data/KBL_Regular_Quarter_Margin5.csv")
 nba_dea <- read.csv("data/DEA3.csv")
@@ -518,10 +519,10 @@ server <- function(input, output){
 
   output$shot <- renderPlot({
     if(input$radio==1){
-      shotloc(data2())
+      shotloc(data2(),courtPoints2)
     }
     else if(input$radio==2){
-      shotloc_d(data2())
+      shotloc_d(data2(),courtPoints2)
     }
   })
 
