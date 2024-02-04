@@ -1,0 +1,11 @@
+name: jaymweb
+title: jaymweb
+username:
+account: jaymnetwork
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 8786410
+bundleId: 8215490
+url: https://jaymnetwork.shinyapps.io/jaymweb/
+asMultiple: FALSE
+asStatic: FALSE
