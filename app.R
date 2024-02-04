@@ -23,12 +23,11 @@ library(interp)
 source("functions.R")
 
 
-hnc_kbl3<-read.csv("data/hnc_kbl2.csv")
+hnc_kbl2<-read.csv("data/hnc_kbl2.csv")
 drafts<-read.csv("data/draft.csv")
 shotloc1<-read.csv("data/shotdata1.csv")
 shotloc2<-read.csv("data/shotdata2.csv")
 
-courtPoints2<-read.csv("data/courtPoints.csv")
 kbl_match_data <- read.csv("data/KBL_Regular_Quarter_Margin3.csv")
 kbl_match_data2 <- read.csv("data/KBL_Regular_Quarter_Margin5.csv")
 nba_dea <- read.csv("data/DEA3.csv")
@@ -123,31 +122,31 @@ ui<-fluidPage(
                                      ),
                                      div(
                                        style="margin-top:40px;",
-                                     sidebarLayout(
-                                       sidebarPanel(
-                                     selectInput(inputId="caption3",
-                                                 label ="3rd Variable",
-                                                 choices=c(PTS="ptsplayer",
-                                                           FGA="fgmplayer",
-                                                           REB="trebplayer",
-                                                           AST="astplayer",
-                                                           STL="stlplayer",
-                                                           BLK="bsplayer",
-                                                           FIC="fic")),
-                                     radioButtons("radio2", "Chart Type",
-                                                  choices = list("Scatter" = 1, "2D Density" = 2), selected = 1),
-                                     checkboxGroupInput("checkGroup1", label = ("Identify Data"), 
-                                                        choices = list("Foreign players" = 1),
-                                                        selected = NULL)
-                                     ),
-                                     
-                                     mainPanel(
-                                     plotOutput("dea1"))),
-                                     div(
-                                       style="margin-top:30px; margin-bottom: 55px",
-                                     DEAtext(),
-                                     DEAtext2())
-                                    
+                                       sidebarLayout(
+                                         sidebarPanel(
+                                           selectInput(inputId="caption3",
+                                                       label ="3rd Variable",
+                                                       choices=c(PTS="ptsplayer",
+                                                                 FGA="fgmplayer",
+                                                                 REB="trebplayer",
+                                                                 AST="astplayer",
+                                                                 STL="stlplayer",
+                                                                 BLK="bsplayer",
+                                                                 FIC="fic")),
+                                           radioButtons("radio2", "Chart Type",
+                                                        choices = list("Scatter" = 1, "2D Density" = 2), selected = 1),
+                                           checkboxGroupInput("checkGroup1", label = ("Identify Data"), 
+                                                              choices = list("Foreign players" = 1),
+                                                              selected = NULL)
+                                         ),
+                                         
+                                         mainPanel(
+                                           plotOutput("dea1"))),
+                                       div(
+                                         style="margin-top:30px; margin-bottom: 55px",
+                                         DEAtext(),
+                                         DEAtext2())
+                                       
                                      )
                                    ),
                                    div(
@@ -155,7 +154,7 @@ ui<-fluidPage(
                                        margin-bottom: 55px;",
                                      HTML("<b>The Project Status: PUBLISHED in <em>Korean Society of Sport and Leisure Studies</em></b>")
                                    )),
-                         
+                          
                           tabPanel(title = "Regression Discontinuity Design",
                                    div(
                                      style = "width: 90%; margin: auto; margin-bottom: 0px;padding-top:55px;",
@@ -170,88 +169,88 @@ ui<-fluidPage(
                                      sidebarLayout(sidebarPanel(
                                        # sliderInput("seasons", "Season",min = 2007, max = 2023, value = c(2008,2020),sep = "",
                                        #                                      ticks = T),
-                                                                selectInput(inputId="quarter",
-                                                                            label ="Quarter",
-                                                                            selected="second",
-                                                                            choices=c(`1Q`="first",
-                                                                                      `2Q`="second",
-                                                                                      `3Q`="third",
-                                                                                      `4Q`="fourth")),
-                                                                sliderInput(inputId="difference",
-                                                                            label ="Score Difference",
-                                                                            value=10,
-                                                                            min=1,max=28),
-                                                                selectInput(inputId="month1",
-                                                                            label ="Starting Month",
-                                                                            selected="9",
-                                                                            choices=c(September=9,
-                                                                                      October=10,
-                                                                                      November=11,
-                                                                                      December=12,
-                                                                                      January=1,
-                                                                                      February=2,
-                                                                                      March=3,
-                                                                                      April=4)),
-                                                                uiOutput("rdd_option"),
-                                                                sliderInput("range", "Winning Percentage",
-                                                                            min = 0, max = 100,
-                                                                            value = c(10,90)),
-                                                                fluidRow(
-                                                                  column(7,
-                                                                         checkboxGroupInput("checkGroup2", label = ("Round Stage"), 
-                                                                                            choices = list("Round 1",
-                                                                                                           "Round 2",
-                                                                                                           "Round 3",
-                                                                                                           "Round 4",
-                                                                                                           "Round 5",
-                                                                                                           "Round 6"),
-                                                                                            selected = c("Round 5","Round 6"))),
-                                                                  column(2,checkboxGroupInput("checkGroup3", label = ("Standings"), 
-                                                                                              choices = list("1st",
-                                                                                                             "2nd",
-                                                                                                             "3rd",
-                                                                                                             "4th",
-                                                                                                             "5th",
-                                                                                                             "6th",
-                                                                                                             "7th",
-                                                                                                             "8th",
-                                                                                                             "9th",
-                                                                                                             "10th"),
-                                                                                              selected = c("1st","2nd","3rd","4th")))
-                                                                  
-                                                                ),
-                                                                ),
-                                                   mainPanel(tabsetPanel(
-                                                               tabPanel(HTML("<b>Plot</b>"), plotOutput('rdd1'),
-                                                                        div(
-                                                                          style = "width: 85%; margin: auto; margin-bottom: 0px;padding-top:20px; padding-bottom:0px;",
-                                                                          HTML("<b>Model Summary:</b> <br> "),
-                                                                          verbatimTextOutput("modelSummary"),
-                                                                          HTML("<em><b>Note:</em></b> <br> "
-                                                                          ),
-                                                                          tags$div("For interpretation of the summary, please refer to the following link:",
-                                                                                   tags$a(href="https://rpubs.com/phle/r_tutorial_regression_discontinuity_design", 
-                                                                                          "RDD interpretation link")))),
-                                                               tabPanel(HTML("<b>Data 1</b>"),
-                                                                        div(
-                                                                          style = "width: 85%; margin: auto; margin-bottom: 0px;padding-top:20px; padding-bottom:0px; overflow-x: scroll;",
-                                                                          DT::dataTableOutput('table')
-                                                                        ) 
-                                                                        ),
-                                                               tabPanel(HTML("<b>Data 2</b>"),
-                                                                        div(
-                                                                          style = "width: 85%; margin: auto; margin-bottom: 0px;padding-top:20px; padding-bottom:0px; overflow-x: scroll;",
-                                                                          DT::dataTableOutput('table2')
-                                                                        ) 
-                                                               ),
-                                                               tabPanel(HTML("<b>3D plot</b>"),
-                                                                        div(
-                                                                          style = "width: 100%; margin: auto; margin-bottom: 0px;padding-top:20px; padding-bottom:0px; overflow-x: scroll;",
-
-                                                                          rglwidgetOutput('rglreg')
-                                                                        ) 
-                                                               ))
-                                                             )
+                                       selectInput(inputId="quarter",
+                                                   label ="Quarter",
+                                                   selected="second",
+                                                   choices=c(`1Q`="first",
+                                                             `2Q`="second",
+                                                             `3Q`="third",
+                                                             `4Q`="fourth")),
+                                       sliderInput(inputId="difference",
+                                                   label ="Score Difference",
+                                                   value=10,
+                                                   min=1,max=28),
+                                       selectInput(inputId="month1",
+                                                   label ="Starting Month",
+                                                   selected="9",
+                                                   choices=c(September=9,
+                                                             October=10,
+                                                             November=11,
+                                                             December=12,
+                                                             January=1,
+                                                             February=2,
+                                                             March=3,
+                                                             April=4)),
+                                       uiOutput("rdd_option"),
+                                       sliderInput("range", "Winning Percentage",
+                                                   min = 0, max = 100,
+                                                   value = c(10,90)),
+                                       fluidRow(
+                                         column(7,
+                                                checkboxGroupInput("checkGroup2", label = ("Round Stage"), 
+                                                                   choices = list("Round 1",
+                                                                                  "Round 2",
+                                                                                  "Round 3",
+                                                                                  "Round 4",
+                                                                                  "Round 5",
+                                                                                  "Round 6"),
+                                                                   selected = c("Round 5","Round 6"))),
+                                         column(2,checkboxGroupInput("checkGroup3", label = ("Standings"), 
+                                                                     choices = list("1st",
+                                                                                    "2nd",
+                                                                                    "3rd",
+                                                                                    "4th",
+                                                                                    "5th",
+                                                                                    "6th",
+                                                                                    "7th",
+                                                                                    "8th",
+                                                                                    "9th",
+                                                                                    "10th"),
+                                                                     selected = c("1st","2nd","3rd","4th")))
+                                         
+                                       ),
+                                     ),
+                                     mainPanel(tabsetPanel(
+                                       tabPanel(HTML("<b>Plot</b>"), plotOutput('rdd1'),
+                                                div(
+                                                  style = "width: 85%; margin: auto; margin-bottom: 0px;padding-top:20px; padding-bottom:0px;",
+                                                  HTML("<b>Model Summary:</b> <br> "),
+                                                  verbatimTextOutput("modelSummary"),
+                                                  HTML("<em><b>Note:</em></b> <br> "
+                                                  ),
+                                                  tags$div("For interpretation of the summary, please refer to the following link:",
+                                                           tags$a(href="https://rpubs.com/phle/r_tutorial_regression_discontinuity_design", 
+                                                                  "RDD interpretation link")))),
+                                       tabPanel(HTML("<b>Data 1</b>"),
+                                                div(
+                                                  style = "width: 85%; margin: auto; margin-bottom: 0px;padding-top:20px; padding-bottom:0px; overflow-x: scroll;",
+                                                  DT::dataTableOutput('table')
+                                                ) 
+                                       ),
+                                       tabPanel(HTML("<b>Data 2</b>"),
+                                                div(
+                                                  style = "width: 85%; margin: auto; margin-bottom: 0px;padding-top:20px; padding-bottom:0px; overflow-x: scroll;",
+                                                  DT::dataTableOutput('table2')
+                                                ) 
+                                       ),
+                                       tabPanel(HTML("<b>3D plot</b>"),
+                                                div(
+                                                  style = "width: 100%; margin: auto; margin-bottom: 0px;padding-top:20px; padding-bottom:0px; overflow-x: scroll;",
+                                                  
+                                                  rglwidgetOutput('rglreg')
+                                                ) 
+                                       ))
+                                     )
                                      )),
                                    div(
                                      style="width: 85%; margin: auto; padding-top:0px; padding-bottom:50px;",
@@ -261,10 +260,10 @@ ui<-fluidPage(
                                        margin-bottom: 55px;",
                                      HTML("<b>The Project Status: PUBLISHED in <em>Korea Journal of Sports Science </em></b>")
                                    )
-                                   ),
+                          ),
                           
                           tabPanel(title = "Data Envelopment Analysis - part 2",
-                       
+                                   
                                    div(
                                      style = "width: 90%; margin: auto; margin-bottom: 0px;padding-top:55px;",
                                      tags$h3("DEA project - part 2"),
@@ -275,42 +274,42 @@ ui<-fluidPage(
                                      )),
                                    div(
                                      style = "width: 90%; margin: auto; margin-bottom: 0px;padding-top:55px;",
-                                   tabsetPanel(
-                                   tabPanel(HTML("<b>Scatterplot</b>"),
-                                            div(
-                                              style = "width: 85%; margin: auto; margin-bottom: 0px;padding-top:20px; padding-bottom:0px; overflow-x: scroll;",
-                                              plotOutput("deaplotgg")
-                                            ) 
-                                   ),
-                                   tabPanel(HTML("<b> 3D surface plot</b>"),
-                                            div(
-                                              style = "width: 85%; margin: auto; margin-bottom: 0px;padding-top:20px; padding-bottom:0px; overflow-x: scroll;",
-                                              plotlyOutput("deaplotly"),
-                                              
-                                            ) 
-                                   ),
-                                   tabPanel(HTML("<b>3D Scatterplot</b>"),
-                                            div(
-                                              style = "width: 85%; margin: auto; margin-bottom: 0px;padding-top:20px; padding-bottom:0px; overflow-x: scroll;",
-                                              rglwidgetOutput('rglreg2')
-                                            ) 
-                                   ),
-                                   tabPanel(HTML("<b>Contour Plot</b>"),
-                                            div(
-                                              style = "width: 85%; margin: auto; margin-bottom: 0px;padding-top:20px; padding-bottom:0px; overflow-x: scroll;",
-                                              plotOutput("deacontour")
-                                              #imageOutput("contour1", width = "100%")
-                                            ) 
-                                   ),
-                                   tabPanel(HTML("<b>Data Caveat</b>"),
-                                            div(
-                                              style = "width: 85%; margin: auto; margin-bottom: 0px;padding-top:20px; padding-bottom:0px; overflow-x: scroll;",
-                                              plotlyOutput("deacaveat"),
-                                              HTML("<em><b>Note:</em></b> <br> We have to be aware that the NBA provides extremely low numbers for some tracking stats in the 2016 season compared to other seasons. This may have caused the result to have a relatively high number of teams in 2016. Nevertheless, the teams mentioned in the results still arguably had successful management in many aspects.")
-                                              
-                                            ) 
-                                   )
-                                   ),
+                                     tabsetPanel(
+                                       tabPanel(HTML("<b>Scatterplot</b>"),
+                                                div(
+                                                  style = "width: 85%; margin: auto; margin-bottom: 0px;padding-top:20px; padding-bottom:0px; overflow-x: scroll;",
+                                                  plotOutput("deaplotgg")
+                                                ) 
+                                       ),
+                                       tabPanel(HTML("<b> 3D surface plot</b>"),
+                                                div(
+                                                  style = "width: 85%; margin: auto; margin-bottom: 0px;padding-top:20px; padding-bottom:0px; overflow-x: scroll;",
+                                                  plotlyOutput("deaplotly"),
+                                                  
+                                                ) 
+                                       ),
+                                       tabPanel(HTML("<b>3D Scatterplot</b>"),
+                                                div(
+                                                  style = "width: 85%; margin: auto; margin-bottom: 0px;padding-top:20px; padding-bottom:0px; overflow-x: scroll;",
+                                                  rglwidgetOutput('rglreg2')
+                                                ) 
+                                       ),
+                                       tabPanel(HTML("<b>Contour Plot</b>"),
+                                                div(
+                                                  style = "width: 85%; margin: auto; margin-bottom: 0px;padding-top:20px; padding-bottom:0px; overflow-x: scroll;",
+                                                  plotOutput("deacontour")
+                                                  #imageOutput("contour1", width = "100%")
+                                                ) 
+                                       ),
+                                       tabPanel(HTML("<b>Data Caveat</b>"),
+                                                div(
+                                                  style = "width: 85%; margin: auto; margin-bottom: 0px;padding-top:20px; padding-bottom:0px; overflow-x: scroll;",
+                                                  plotlyOutput("deacaveat"),
+                                                  HTML("<em><b>Note:</em></b> <br> We have to be aware that the NBA provides extremely low numbers for some tracking stats in the 2016 season compared to other seasons. This may have caused the result to have a relatively high number of teams in 2016. Nevertheless, the teams mentioned in the results still arguably had successful management in many aspects.")
+                                                  
+                                                ) 
+                                       )
+                                     ),
                                    ),
                                    div(
                                      style = "width: 85%; margin: auto; margin-bottom: 55px;padding-top:40px; padding-bottom:0px;",
@@ -381,7 +380,7 @@ ui<-fluidPage(
                                      HTML("<em><b>Note:</em></b> <br> Shot data is available from 1997. 
                                           However, only the shot data from the 20s will 
                                           be visualized due to the limited instance size of the web.")
-                                     )
+                                   )
                                    
                                    
                           ),
@@ -394,15 +393,15 @@ ui<-fluidPage(
                                                                             selected=30,
                                                                             choices=seq(1,60)),
                                                                 sliderInput("year", "Year",min = 1949, max = 2022, value = c(1980,2020),sep = "",
-                                                                                                               ticks = T)),
+                                                                            ticks = T)),
                                                    mainPanel(plotOutput("drafts")
-                                                             )
-                                                   )),
+                                                   )
+                                     )),
                                    div(
                                      style = "width: 85%; margin: auto; margin-bottom: 0px;padding-top:20px; padding-bottom:0px; overflow-x: scroll;",
                                      DT::dataTableOutput('draft')
                                    ) 
-                                     
+                                   
                           ),
                ),
                tabPanel(title = "Contact",
@@ -478,7 +477,7 @@ ui<-fluidPage(
 
 
 server <- function(input, output){
- 
+  
   output$selected_var <- renderText({ 
     data()$typeAction
   })
@@ -498,7 +497,7 @@ server <- function(input, output){
          height = 405)
     
   }, deleteFile = F)
-
+  
   
   data <- reactive({
     shotdata[shotdata$nameTeam==input$caption1 & shotdata$yearSeason==input$obs,]
@@ -516,63 +515,63 @@ server <- function(input, output){
     data() %>% filter(namePlayer==input$caption2) %>%
       mutate(distTrans=if_else(distanceShot==0,0.8,distanceShot))
   })
-
+  
   output$shot <- renderPlot({
     if(input$radio==1){
-      shotloc(data2(),courtPoints2)
+      shotloc(data2())
     }
     else if(input$radio==2){
-      shotloc_d(data2(),courtPoints2)
+      shotloc_d(data2())
     }
   })
-
+  
   
   output$dea1 <- renderPlot({
     if(input$radio2==1){
-    ggplot(hnc_kbl3, aes(x= possplayer, y= DEA_vrs,family = "NanumGothic",
-                         label=ifelse(possplayer>21.1 &DEA_vrs==1,paste(as.character(PLAYER),SEASON),                                  ifelse(possplayer>5.861 & possplayer<9.1 & DEA_vrs==1,paste(as.character(PLAYER),SEASON),""))))+
-      labs(x="Possesion",
-           y="Efficiency (VRS)") +
-      geom_point(aes(colour=.data[[input$caption3]]))+{
-        if(!is.null(input$checkGroup1)) geom_point(data=subset(hnc_kbl3,
-                                                               foreign==1),
-                                                   colour="white",shape=1,stroke=1)
-      }+
-      scale_color_viridis(option = "plasma", name="Selected variable") +
-      geom_text_repel(point.padding = 0.6,
-                      nudge_x = .5,
-                      segment.size=0.2,
-                      segment.color="grey50",
-                      arrow = arrow(length = unit(0.015, "npc")),size=2.5,max.overlaps=Inf,
-                      colour="black")+expand_limits(y = c(0, 1.19), x=c(0,20))+
-      geom_mark_hull(data = hnc_kbl2[hnc_kbl2$possplayer>21.1 & hnc_kbl2$DEA_vrs == 1,], 
-                     aes(x= possplayer, y= DEA_vrs, label="Extreme Productivity"),
-                     label.fill=NA,
-                     label.family = "NanumGothic",
-                     label.fontsize = 7,
-                     con.cap =1,
-                     con.type="straight",
-                     color="darkgreen",
-                     fill = "darkgreen",
-                     expand=0.000001,linetype = 2)+
-      geom_mark_hull(data = hnc_kbl2[hnc_kbl2$possplayer>5.861 &
-                                       hnc_kbl2$possplayer<9.1& hnc_kbl2$DEA_vrs == 1,], 
-                     aes(x= possplayer, y= DEA_vrs, label="Cost Effective"),
-                     label.fill=NA,
-                     label.family = "NanumGothic",
-                     label.fontsize = 7,
-                     con.cap =1,
-                     con.type="straight",
-                     color="darkgreen",
-                     fill ="darkgreen",
-                     expand=0.00001,linetype = 2)+
-      expand_limits(y = c(-0.2, 1.35), x=c(0,38))+
-      scale_y_continuous(breaks = c(0,0.2,0.4,0.6,0.8,1.0))+
-      scale_x_continuous(breaks = c(0,3.86,10,20,30))+
-      geom_vline(xintercept=3.86, linetype=3)+
-      theme(plot.title=element_text(face="bold"),
-            legend.title=element_text(size=8),
-            legend.text=element_text(size=7))
+      ggplot(hnc_kbl2, aes(x= possplayer, y= DEA_vrs,family = "NanumGothic",
+                           label=ifelse(possplayer>21.1 &DEA_vrs==1,paste(as.character(PLAYER),SEASON),                                  ifelse(possplayer>5.861 & possplayer<9.1 & DEA_vrs==1,paste(as.character(PLAYER),SEASON),""))))+
+        labs(x="Possesion",
+             y="Efficiency (VRS)") +
+        geom_point(aes(colour=.data[[input$caption3]]))+{
+          if(!is.null(input$checkGroup1)) geom_point(data=subset(hnc_kbl2,
+                                                                 foreign==1),
+                                                     colour="white",shape=1,stroke=1)
+        }+
+        scale_color_viridis(option = "plasma", name="Selected variable") +
+        geom_text_repel(point.padding = 0.6,
+                        nudge_x = .5,
+                        segment.size=0.2,
+                        segment.color="grey50",
+                        arrow = arrow(length = unit(0.015, "npc")),size=2.5,max.overlaps=Inf,
+                        colour="black")+expand_limits(y = c(0, 1.19), x=c(0,20))+
+        geom_mark_hull(data = hnc_kbl2[hnc_kbl2$possplayer>21.1 & hnc_kbl2$DEA_vrs == 1,], 
+                       aes(x= possplayer, y= DEA_vrs, label="Extreme Productivity"),
+                       label.fill=NA,
+                       label.family = "NanumGothic",
+                       label.fontsize = 7,
+                       con.cap =1,
+                       con.type="straight",
+                       color="darkgreen",
+                       fill = "darkgreen",
+                       expand=0.000001,linetype = 2)+
+        geom_mark_hull(data = hnc_kbl2[hnc_kbl2$possplayer>5.861 &
+                                         hnc_kbl2$possplayer<9.1& hnc_kbl2$DEA_vrs == 1,], 
+                       aes(x= possplayer, y= DEA_vrs, label="Cost Effective"),
+                       label.fill=NA,
+                       label.family = "NanumGothic",
+                       label.fontsize = 7,
+                       con.cap =1,
+                       con.type="straight",
+                       color="darkgreen",
+                       fill ="darkgreen",
+                       expand=0.00001,linetype = 2)+
+        expand_limits(y = c(-0.2, 1.35), x=c(0,38))+
+        scale_y_continuous(breaks = c(0,0.2,0.4,0.6,0.8,1.0))+
+        scale_x_continuous(breaks = c(0,3.86,10,20,30))+
+        geom_vline(xintercept=3.86, linetype=3)+
+        theme(plot.title=element_text(face="bold"),
+              legend.title=element_text(size=8),
+              legend.text=element_text(size=7))
     }
     else if(input$radio2==2){
       ggplot(hnc_kbl2,aes(x=possplayer,y=DEA_vrs, family = "NanumGothic",
@@ -587,7 +586,7 @@ server <- function(input, output){
         labs(x="Possesion",
              y="Efficiency (VRS)") +
         {
-          if(!is.null(input$checkGroup1)) geom_point(data=subset(hnc_kbl3,
+          if(!is.null(input$checkGroup1)) geom_point(data=subset(hnc_kbl2,
                                                                  foreign==1),
                                                      colour="turquoise",shape=1,stroke=1)
         }+
@@ -610,11 +609,11 @@ server <- function(input, output){
   })
   
   output$dea2 <- renderPlot({
-    DEA_plot2(hnc_kbl3)
+    DEA_plot2(hnc_kbl2)
   })
   
   output$dea3 <- renderPlot({
-    DEA_plot3(hnc_kbl3)
+    DEA_plot3(hnc_kbl2)
   })
   
   draftd <- reactive({
@@ -660,7 +659,7 @@ server <- function(input, output){
                 choices=option[which(option==input$month3):8])
   })
   
-
+  
   output$modelSummary <- renderPrint({
     cat("Total Games:",sum(rdd_data()$games),"\n")
     cat("Score Difference:",input$difference,"\n")
@@ -679,19 +678,19 @@ server <- function(input, output){
   })
   output$deacontour <- renderPlot({
     filled.contour(x = fld$x,
-                    y = fld$y,
-                    z = fld$z,
-                    plot.axes={
-                      axis(1,cex.axis=0.7)
-                      axis(2,cex.axis=0.7)
-                    },
-                    key.axes = axis(4,cex.axis=0.6),
-                    color.palette =
-                      colorRampPalette(c("darkblue", "skyblue", "white","red","darkred")),
-                    nlevels = 20)
+                   y = fld$y,
+                   z = fld$z,
+                   plot.axes={
+                     axis(1,cex.axis=0.7)
+                     axis(2,cex.axis=0.7)
+                   },
+                   key.axes = axis(4,cex.axis=0.6),
+                   color.palette =
+                     colorRampPalette(c("darkblue", "skyblue", "white","red","darkred")),
+                   nlevels = 20)
   })
-
-
+  
+  
   output$rglreg <- renderRglwidget({
     rgl.open(useNULL=T)
     threeDim(rdd_data())
@@ -705,16 +704,16 @@ server <- function(input, output){
                 highlight.3d=T,point.col=ifelse(nba_dea$resid>0,"blue","red"),
                 id.n = ifelse(nba_dea$DEA_crs3==1,"1",""))
     view3d( theta = -100, phi = 10, fov = -20, zoom = 1, 
-                   scale = par3d("scale"), interactive = TRUE)
+            scale = par3d("scale"), interactive = TRUE)
     rglwidget()
   })
-
-
+  
+  
   
   output$table <- DT::renderDataTable(kbl_match_data2)
   output$table2 <- DT::renderDataTable(rdd_data())
   output$draft <- DT::renderDataTable(drafts)
-
+  
 }
 
 shinyApp(ui = ui, server = server)
