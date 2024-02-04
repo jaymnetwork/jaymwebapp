@@ -276,8 +276,8 @@ DEA_plot3<-function(data){
 }
 
 
-shotloc<-function(data){
-  court_points <- court_points %>% mutate_if(is.numeric,~.*10)
+shotloc<-function(data,data2){
+  court_points <- data2 %>% mutate_if(is.numeric,~.*10)
   
   ggplot(data, aes(x=locationX, y=locationY+45)) + 
     scale_fill_manual(values = c("darkred","darkred"))+
@@ -297,9 +297,9 @@ shotloc<-function(data){
           legend.position = "none")
 }
 
-shotloc_d<-function(data){
+shotloc_d<-function(data,data2){
 
-  court_points <- court_points %>% mutate_if(is.numeric,~.*10)
+  court_points <- data2 %>% mutate_if(is.numeric,~.*10)
   
   ggplot(data, aes(x=locationX, y=locationY+45)) + 
     stat_density_2d(
